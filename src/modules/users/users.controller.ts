@@ -6,17 +6,28 @@ import {
   Patch,
   Param,
   Delete,
+  HttpStatus,
+  HttpException,
 } from '@nestjs/common';
 import { ICreateUser, IUpdateUser } from './dto/types';
 import { UsersService } from './users.service';
+import * as bcrypt from 'bcrypt';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  create(@Body() createUserDto: ICreateUser) {
-    return this.usersService.create(createUserDto);
+  async create(@Body() data: ICreateUser) {
+    const existsEmail = await this.usersService.findByEmail(data.email);
+    if (existsEmail)
+      throw new HttpException('Email already exists!', HttpStatus.BAD_REQUEST);
+
+    const salt = await bcrypt.genSalt();
+    const hash = await bcrypt.hash(data.password, salt);
+
+    await this.usersService.create({ ...data, password: hash });
+    return;
   }
 
   @Get()
