@@ -20,6 +20,10 @@ export class UsersService {
     const response = await this.users.findFirst({ where: { id } });
     return response;
   }
+  async findByEmail(email: string) {
+    const response = await this.users.findFirst({ where: { email } });
+    return response;
+  }
 
   async update(id: string, data: IUpdateUser) {
     const response = await this.users.update({ data, where: { id } });
