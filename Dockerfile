@@ -12,4 +12,4 @@ RUN npx prisma generate
 
 USER node
 
-CMD npm start
+CMD npm start:dev
