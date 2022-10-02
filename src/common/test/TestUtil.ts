@@ -1,13 +1,13 @@
 import { Users } from '@prisma/client';
 import { PrismaService } from '../../database/prisma.service';
-import {faker} from 'faker';
+import { faker } from '@faker-js/faker';
 
 export class TestUtil {
   static giveAMeAValidUser(): Users {
     const user: Users = {
-      id: ,
-      name: 'John',
-      last_name: 'Doe',
+      id: faker.datatype.uuid(),
+      name: faker.name.firstName(),
+      last_name: faker.name.lastName(),
       email: 'john@example.com',
       password: '123456',
       recovery_code: '',
