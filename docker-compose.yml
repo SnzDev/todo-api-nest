@@ -1,0 +1,12 @@
+version: '2.1'
+services:
+  todo-list:
+    build: .
+    ports:
+      - 3333:3333
+    volumes:
+      - .:/todo-list
+      - node_modules:/todo-list/node_modules
+
+volumes:
+  node_modules: {}

@@ -8,14 +8,14 @@ import {
   Delete,
   HttpStatus,
   HttpException,
-  UseGuards,
   Request,
+  UseGuards,
 } from '@nestjs/common';
 import { ICreateUser, IUpdateUser } from './dto/types';
 import { UsersService } from './users.service';
 import * as bcrypt from 'bcrypt';
-import { LocalAuthGuard } from 'src/auth/local-auth.guard';
-import { AuthService } from 'src/auth/auth.service';
+import { AuthService } from '../../auth/auth.service';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('users')
 export class UsersController {
@@ -24,10 +24,10 @@ export class UsersController {
     private authService: AuthService,
   ) {}
 
-  @UseGuards(LocalAuthGuard)
+  @UseGuards(AuthGuard('local'))
   @Post('login')
   async login(@Request() req) {
-    return this.authService.login(req.user);
+    return this.authService.loginWithCredentials(req.user);
   }
 
   @Post()

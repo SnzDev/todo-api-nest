@@ -14,7 +14,7 @@ model Users {
   id            String   @id @default(uuid())
   name          String
   last_name     String
-  email         String
+  email         String   @unique
   password      String
   recovery_code String?
   active        Boolean? @default(true)
@@ -34,7 +34,7 @@ model Todos {
   created_at  DateTime @default(now())
   update_at   DateTime @updatedAt
   usersId     String?
-  Users       Users[]
+  Users       Users?   @relation(fields: [usersId], references: [id], onDelete: Cascade)
 
   @@map("todos")
 }
